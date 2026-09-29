@@ -5,14 +5,14 @@ from __future__ import annotations
 import json
 import re
 import shutil
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 import httpx
 
 PROJECTS_DIR = Path(__file__).resolve().parent.parent / "projects_data"
-BEIJING_TZ = timezone(timedelta(hours=8))
+from common.time_utils import DISPLAY_TIMEZONE
 
 
 def _project_dir(project_id: str) -> Path:
@@ -188,7 +188,7 @@ def semantic_repair_generated_ts(
             "channel_id": meta.get("channel_id"),
         }
 
-    timestamp = datetime.now(BEIJING_TZ).strftime("%Y%m%d-%H%M%S")
+    timestamp = datetime.now(DISPLAY_TIMEZONE).strftime("%Y%m%d-%H%M%S%z")
     backup_path = _project_dir(project_id) / f"generated.before-semantic-repair-{timestamp}.ts"
     shutil.copyfile(ts_path, backup_path)
     ts_path.write_text(repaired, encoding="utf-8")
@@ -198,7 +198,7 @@ def semantic_repair_generated_ts(
     artifacts = nodegraph.setdefault("artifacts", {})
     history = artifacts.setdefault("semantic_repair_history", [])
     history.append({
-        "at": datetime.now(BEIJING_TZ).isoformat(timespec="seconds"),
+        "at": datetime.now(DISPLAY_TIMEZONE).isoformat(timespec="seconds"),
         "backup_path": str(backup_path.relative_to(PROJECTS_DIR.parent)),
         "source_errors": (errors or [])[:10],
         "model": meta.get("model"),

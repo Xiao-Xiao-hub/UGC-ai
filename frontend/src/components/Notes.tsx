@@ -315,7 +315,8 @@ function NoteCard({ note, isExpanded, isEditing, hasLiked, onToggleExpand, onLik
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr)
-    return date.toLocaleString('zh-CN', { 
+    return date.toLocaleString('en-US', {
+      timeZone: 'America/New_York',
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -346,7 +347,7 @@ function NoteCard({ note, isExpanded, isEditing, hasLiked, onToggleExpand, onLik
     
     const encodedUrl = ensured.replace(/"/g, '&quot;')
     const html = `<!doctype html>
-      <html lang="zh-CN">
+      <html lang="en">
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />

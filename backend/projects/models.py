@@ -1,15 +1,15 @@
 """Projects API 数据模型"""
 from __future__ import annotations
 
-from datetime import datetime, timezone, timedelta
+from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel, Field
 
-BEIJING_TZ = timezone(timedelta(hours=8))
+from common.time_utils import DISPLAY_TIMEZONE
 
 
 def _now_iso() -> str:
-    return datetime.now(BEIJING_TZ).isoformat(timespec="seconds")
+    return datetime.now(DISPLAY_TIMEZONE).isoformat(timespec="seconds")
 
 
 # ── 请求模型 ────────────────────────────────────────────

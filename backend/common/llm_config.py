@@ -6,7 +6,7 @@
 import os
 import asyncio
 import httpx
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from typing import Dict, Any
 
 from .pg_client import model_usage_manager
@@ -91,8 +91,8 @@ def resolve_llm_config(config: Dict[str, Any]) -> Dict[str, str | int]:
                   f"剩余 {quota['remaining']} 次")
 
         if ch == 1:
-            hour = datetime.now(timezone(timedelta(hours=8))).hour
-            model_env = "DEFAULT_FREE_MODEL_NAME_PEAK" if 16 <= hour < 24 else "DEFAULT_FREE_MODEL_NAME"
+            hour = datetime.now(timezone.utc).hour  # Supplier peak window: 08:00–16:00 UTC.
+            model_env = "DEFAULT_FREE_MODEL_NAME_PEAK" if 8 <= hour < 16 else "DEFAULT_FREE_MODEL_NAME"
             return {"api_key": os.getenv("DEFAULT_FREE_MODEL_KEY", ""),
                     "api_base_url": os.getenv("DEFAULT_FREE_MODEL_URL", ""),
                     "model": os.getenv(model_env, ""), "channel_id": ch}

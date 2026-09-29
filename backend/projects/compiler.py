@@ -9,9 +9,9 @@ import json
 import shutil
 import subprocess
 from pathlib import Path
-from datetime import datetime, timezone, timedelta
+from datetime import datetime
 
-BEIJING_TZ = timezone(timedelta(hours=8))
+from common.time_utils import DISPLAY_TIMEZONE
 PROJECTS_DIR = Path(__file__).resolve().parent.parent / "projects_data"
 GST_MASTER = Path(r"D:\UGC - AI\genshin-ts-master").resolve()
 GST_DIST = GST_MASTER / "dist"
@@ -281,6 +281,6 @@ def _update_compile_status(project_id: str, project: dict, result: dict) -> None
     artifacts["compile_workspace_path"] = result.get("workspace_path", "")
     artifacts["compiled_json_path"] = result.get("compiled_json_path", artifacts.get("compiled_json_path", ""))
     artifacts["compiled_gia_path"] = result.get("compiled_gia_path", artifacts.get("compiled_gia_path", ""))
-    artifacts["last_compile_at"] = datetime.now(BEIJING_TZ).isoformat(timespec="seconds")
+    artifacts["last_compile_at"] = datetime.now(DISPLAY_TIMEZONE).isoformat(timespec="seconds")
     artifacts["compile_errors_count"] = len(result.get("errors", []))
     _write_project(project_id, project)

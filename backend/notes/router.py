@@ -4,27 +4,11 @@
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 from typing import Optional, List
-from datetime import datetime, timezone, timedelta
+from common.time_utils import local_iso
 
 from common.pg_client import pg_client
 
 router = APIRouter()
-
-# 北京时区 (UTC+8)
-BEIJING_TZ = timezone(timedelta(hours=8))
-
-
-def to_beijing_time(dt):
-    """将时间转换为北京时区"""
-    if dt is None:
-        return None
-    # 如果是aware datetime，转换到北京时区
-    if dt.tzinfo is not None:
-        return dt.astimezone(BEIJING_TZ).isoformat()
-    # 如果是naive datetime，假设它是UTC时间，然后转换为北京时区
-    else:
-        return dt.replace(tzinfo=timezone.utc).astimezone(BEIJING_TZ).isoformat()
-
 
 class NoteCreate(BaseModel):
     author: Optional[str] = None
@@ -69,8 +53,8 @@ async def create_note(note: NoteCreate):
         
         result = {
             "id": row[0],
-            "created_at": to_beijing_time(row[1]),
-            "version": to_beijing_time(row[2]),
+            "created_at": local_iso(row[1]),
+            "version": local_iso(row[2]),
             "author": row[3],
             "content": row[4],
             "likes": row[5] or 0,
@@ -132,8 +116,8 @@ async def update_note(note_id: int, note: NoteUpdate):
         
         result = {
             "id": new_row[0],
-            "created_at": to_beijing_time(new_row[1]),
-            "version": to_beijing_time(new_row[2]),
+            "created_at": local_iso(new_row[1]),
+            "version": local_iso(new_row[2]),
             "author": new_row[3],
             "content": new_row[4],
             "likes": new_row[5] or 0,
@@ -262,8 +246,8 @@ async def list_notes(
         items = [
             {
                 "id": row[0],
-                "created_at": to_beijing_time(row[1]),
-                "version": to_beijing_time(row[2]),
+                "created_at": local_iso(row[1]),
+                "version": local_iso(row[2]),
                 "author": row[3],
                 "content": row[4],
                 "likes": row[5] or 0,
@@ -305,8 +289,8 @@ async def get_note(note_id: int):
         
         result = {
             "id": row[0],
-            "created_at": to_beijing_time(row[1]),
-            "version": to_beijing_time(row[2]),
+            "created_at": local_iso(row[1]),
+            "version": local_iso(row[2]),
             "author": row[3],
             "content": row[4],
             "likes": row[5] or 0,
