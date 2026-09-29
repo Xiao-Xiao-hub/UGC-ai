@@ -10,6 +10,7 @@ import uuid
 import re
 import shutil
 from pathlib import Path
+from datetime import datetime, timezone, timedelta
 from typing import Optional
 
 from .models import (
@@ -20,6 +21,7 @@ from .models import (
 )
 
 PROJECTS_DIR = Path(__file__).resolve().parent.parent / "projects_data"
+BEIJING_TZ = timezone(timedelta(hours=8))
 
 
 def _project_dir(project_id: str) -> Path:

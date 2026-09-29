@@ -35,7 +35,3 @@ knowledge/rag_v1/           Vector indexing and retrieval
 knowledge/Miliastra-knowledge/  Markdown knowledge submodule
 docker/                     Docker Compose configuration
 ```
-
-## Date and time display
-
-Timestamps use `America/New_York` for display, including daylight saving time. Existing timestamp values keep their original instants. See [locale migration](./docs/locale-migration.md) for compatibility details.
