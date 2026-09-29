@@ -1,50 +1,41 @@
-# 千星奇域工具箱
+# Miliastra Toolbox
 
-千星奇域工具箱是AI赋能，提升千星沙箱编辑效率的工具集合。
+AI-assisted tools for working with the Miliastra sandbox editor.
 
-## 快速使用
+## Deployment and development
 
-- **前端知识问答**: [访问地址](https://ugc.070077.xyz)（建议自带API使用）
-- **QQ机器人**: 通过nonebot插件提供问答。群号：1007538100（工具箱用户群）
+Start with the module documentation:
 
-## 部署与开发
+1. [Docker deployment](./docker/README.md)
+2. [Knowledge-base construction](./knowledge/rag_v1/README.md)
+3. [Frontend build](./frontend/README.md)
+4. [Backend startup](./backend/README.md)
 
-详细的模块文档请参考各子目录的 `README.md`：
+Frontend build output under `backend/static/` is not committed. Build the frontend with `cd frontend && npm run build` before restarting the backend. The repository contains source and configuration rather than generated bundles.
 
-1. **[Docker 一键部署](./docker/README.md)**（推荐）
-2. **源码本地启动流程**:
-   - [知识库构建](./knowledge/rag_v1/README.md)
-   - [前端构建](./frontend/README.md)（必需，前端构建产物不再提交到仓库）
-   - [后端启动](./backend/README.md)
+## Capabilities and roadmap
 
-## 仓库策略
+- [x] Knowledge Q&A across guide and tutorial collections.
+- [x] FastAPI backend and React frontend, including configured model access.
+- [x] Shared knowledge-query capabilities through MCP and the HTTP Skill API.
+- [ ] Parameter-data aggregation and conversational design assistance.
+- [ ] Multimodal retrieval for finding assets from descriptions.
 
-- 前端构建产物（`backend/static/` 下的 `index.html`、`assets/*`）不再入库。
-- 部署时必须执行前端构建（`cd frontend && npm run build`），再重启后端服务。
-- 仓库仅保存源码与配置，避免每次发布产生大量 hash 文件差异（delete/add）。
+Much of the code was generated with AI assistance.
 
-## 开发计划
-
-- [x] **知识问答系统**：支持多目录（guide + tutorial）的知识库构建和查询。
-- [x] **前后端搭建**：FastAPI后端（提供免费模型）与 React前端。
-- [ ] **数据问答系统**：集合并统计参数数据，与AI对话设计。
-- [ ] **素材寻找系统**：通过多模态RAG快速寻找符合描述的素材。
-- [x] **Skill + API 能力层**：同一套千星知识查询能力已同时暴露为 MCP Server 和 HTTP Skill API。
-
-> 本项目大部分代码由AI生成
-
-## 项目结构 (Project Structure)
+## Project structure
 
 ```text
-.
-├── backend/       # FastAPI 后端服务（处理对话、RAG 检索、Skill API）
-├── frontend/      # React 前端交互界面
-├── mcp/           # MCP Server（知识库工具对外服务）
-├── knowledge/     # 知识库管理
-│   ├── spider/        # 官方文档爬虫
-│   ├── bbs_spider/    # 论坛问答爬虫
-│   ├── rag_v1/        # 向量知识库构建与 RAG 核心逻辑
-│   └── Miliastra-knowledge/ # 实际的 Markdown 文档存放库
-├── docker/        # Docker Compose 部署配置
-└── CLAUDE.md      # 开发与 AI 协作规范
+backend/                    FastAPI, chat, retrieval, and Skill API
+frontend/                   React interface
+mcp/                        MCP knowledge tools
+knowledge/spider/           Official-documentation crawler
+knowledge/bbs_spider/       Community Q&A crawler
+knowledge/rag_v1/           Vector indexing and retrieval
+knowledge/Miliastra-knowledge/  Markdown knowledge submodule
+docker/                     Docker Compose configuration
 ```
+
+## Date and time display
+
+Timestamps use `America/New_York` for display, including daylight saving time. Existing timestamp values keep their original instants. See [locale migration](./docs/locale-migration.md) for compatibility details.
